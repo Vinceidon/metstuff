@@ -1,0 +1,65 @@
+  var metar = "http://met.gov.om/dms/download?DATATYPES=MetarData&FORMAT=JSON&MAXPARAMVALUE=TIME&CCCC=OOMA";
+  $.getJSON(metar, function( data ) {
+	console.log(data)
+var cccc= data.cccc
+var cavok=data.cavok
+var cloudlevel=data.cloudlevel
+var humidity=data.humidity
+var issueDate=data.issueDate
+var pressure=data.pressure
+var symbol=data.symbol
+var temperature=data.temperature
+var weather=data.weather
+var windDirection=data.windDirection
+var windSpeed=data.windSpeed
+
+var time=issueDate.substr(0, 2) + issueDate.substr(3,2)
+var hours=issueDate.substr(0,2)
+var day=issueDate.substr(6,2)
+
+
+if (windDirection<0){
+windDirection = "000"
+windSpeed = "00"
+}
+
+if (windSpeed<0){
+windDirection = "000"
+windSpeed = "00"
+}
+
+if (windSpeed<10){
+windSpeed="0"+windSpeed
+}
+
+if (cavok="false"){
+cavok=cloudlevel;
+}
+
+//convert time to zulu
+if (hours>03) {
+var zulu = time-400;
+
+} else {
+var zulu = time+2000
+day=day-1
+   if(day<10){
+   day="0"+day
+   }
+}
+
+//adds leading zeroes
+if (zulu<10){
+zulu = "000"+zulu+"Z";
+}else if (zulu<100){
+zulu="00"+zulu+"Z";
+} else if(zulu<1000) {
+zulu="0"+zulu+"Z";
+} else{
+zulu=zulu+"Z";
+}
+	
+var output = "METAR "+ cccc + " " +day+zulu+ " "+windSpeed+windDirection + " " + cavok + " " + temperature+"/"+"XX" + " "+"Q"+pressure
+console.log(output)
+document.getElementById("demo").innerHTML = output;
+    });
