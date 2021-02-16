@@ -28,8 +28,10 @@ def lambda_handler(event, context):
 		temp="0"+str(tinteg)
 	else:
 		temp=str(tinteg)
+
 	metar=str("METAR " + str(text["cccc"])+" "+str(text["issueDate"][6:8])  +str(text["issueDate"][0:2])+str(text["issueDate"][3:5])+ "Z "+direction+speed +"KT " + str(text["weather"])+"" +cavok+temp+"/XX Q"+str(int(text["pressure"])))
 	final={"result":metar}
+	#print(final["result"])
 	return {
 		'output':metar
 	}
